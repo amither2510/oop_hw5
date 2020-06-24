@@ -3,4 +3,4 @@ project(oop_hw5)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(oop_hw5 main.cpp)
+add_executable(oop_hw5 main.cpp Part2/Stream.h)
