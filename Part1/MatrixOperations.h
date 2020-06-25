@@ -3,14 +3,13 @@
 
 #include "Transpose.h"
 
-/*-----------------MatrixGet----------------------*/
 
+/*
 template<int N, int M, typename T>
 struct MatrixGet {
 	typedef typename ListGet<M, typename ListGet<N, T>::value>::value value;
 };
 
-/*-----------------MatrixSet----------------------*/
 
 template<int N, int M, typename T, typename L>
 struct MatrixSet {
@@ -19,7 +18,6 @@ struct MatrixSet {
 	typedef typename ListSet<N, updated, L>::list list;
 };
 
-/*-----------------Lists Sum----------------------*/
 template<int N, typename L1, typename L2>
 struct ListSum {};
 
@@ -32,7 +30,6 @@ template<typename T1, typename... TT1, typename T2, typename... TT2>
 struct ListSum<0, List<T1, TT1...>, List<T2, TT2...>> {
 	static constexpr int sum = T1::value*T2::value;
 };
-/*-----------------N_List----------------------*/
 template<int N>
 struct N_List {
 	typedef typename PrependList<Int<0>,typename N_List<N-1>::list>::list list;
@@ -43,7 +40,6 @@ struct N_List<0> {
 	typedef List<> list;
 };
 
-/*-----------------NxM_Matrix----------------------*/
 template<int N, int M>
 struct NxM_Matrix {
 	typedef typename PrependList<typename N_List<M>::list, typename NxM_Matrix<N-1,M>::matrix>::list matrix;
@@ -54,7 +50,6 @@ struct NxM_Matrix<0,M> {
 	typedef List<> matrix;
 };
 
-/*-----------------MultiplyAux----------------------*/
 
 template<int N, int M, typename L1, typename L2>
 struct MultiplyAux {
@@ -74,7 +69,6 @@ template<typename L1, typename L2>
 struct MultiplyAux<1,0,L1,L2> {
 	typedef typename NxM_Matrix<L1::size, L2::size>::matrix result;
 };
-/*-----------------Multiply----------------------*/
 
 template<typename L1, typename L2>
 struct Multiply {
@@ -87,7 +81,7 @@ struct Multiply {
 
 
 
-
+*/
 
 
 //============================Matrix============================
@@ -129,11 +123,6 @@ struct Add {
 
 };
 
-//
-#endif // __MATRIX_H
-
-
-/*
 
 //-------------SumList-------------
 template<typename L>
@@ -169,13 +158,26 @@ struct RowMultiply{};
 template<typename... L1,typename T,typename... TT>
 struct RowMultiply<List<L1...>,List<List<T>,TT...>> {
 	typedef typename PrependList <  Int<SumList< typename ListMultiply<List<L1...>,List<T>>::result>::value>,
-		 typename RowMultiply<List<L1...>,TT...>::result>::list result;
+		 typename RowMultiply<List<L1...>,List<TT...>>::result>::list result;
 };
 template <typename... L1,typename L2>
-struct RowMultiply<List<L1...>,List<L2>>{
-	typedef  List<Int<SumList< typename ListMultiply<List<L1...>,L2>::result>::value>> result;
+struct RowMultiply<List<L1...>,List<List<L2>>>{
+	typedef  List<Int<SumList< typename ListMultiply<List<L1...>,List<L2>>::result>::value>> result;
 };
 
+//-------------InitMultiply-------------
+template<typename M1, typename M2>
+struct InitMultiply{};
+template<typename L1,typename... LL1, typename M2>
+struct InitMultiply<List<L1,LL1...>,M2> {
+	typedef typename PrependList <typename RowMultiply<L1,M2>::result,
+			typename InitMultiply<<List<LL1...>,M2>::result>::list result;
+};
+
+template<typename L1,typename M2>
+struct InitMultiply<List<List<L1>>,M2> {
+	typedef  List<typename RowMultiply<List<L1>,M2>::result> result;
+};
 
 
 
@@ -184,11 +186,11 @@ template<typename M1, typename M2>
 struct Multiply{
 	static_assert(M1::size == Transpose<M2>::matrix::size, "matrix multiplication is undefined");
 	static_assert(Transpose<M1>::matrix::size == M2::size, "matrix multiplication is undefined");
-	typedef typename Transpose< M2>::matrix matrix2;
-	typedef typename InitMultiply<M1,matrix2>::result result; 
+	//typedef typename Transpose< M2>::matrix matrix2;
+	typedef typename InitMultiply<M1,typename Transpose< M2>::matrix>::result result;
 
 };
 
 
 #endif // __MATRIX_H
-*/
+

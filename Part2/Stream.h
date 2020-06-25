@@ -16,7 +16,7 @@ private:
     std::function<std::vector<Stream<M>*>()> block;
     template <class T>
     struct collection{
-        constexpr static T* result = new T;
+        constexpr static T result = std::copy;
     };
 
 public:

@@ -51,8 +51,10 @@ struct ListSet <0,V, List<T,TT...>> {
 };
 
 //============================Int============================
+
 template <int N>
 struct Int{
 	constexpr static int value = N;
 };
+
 #endif // __UTILITIES_H
