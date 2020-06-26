@@ -34,23 +34,44 @@ int main() {
 															   //			List< Int<8>, Int<0>, Int<8> >
 															   //		 >
 	static_assert(matrix31::head::head::value == 8, "Failed");
-	
+
+    constexpr static int sum = SumList<List< Int<1>, Int<2>, Int<10> >>::result;
+    static_assert(sum == 13, "sum Failed");
+
+    typedef typename ListMultiply<List<Int<2>>,List< Int<10> > >::result listMul1;
+    static_assert(listMul1::head::value == 20, "ListMultiply Failed");
+
+    typedef typename ListMultiply<List< Int<1>, Int<2> >,List< Int<10>, Int<20> >>::result listMul;
+    static_assert(listMul::head::value == 10, "ListMultiply Failed");
+    static_assert(listMul::next::head::value == 40, "ListMultiply Failed");
+    constexpr static int sumAfterMullList = SumList<listMul>::result;
+    static_assert(sumAfterMullList == 50, "sumAfterMullList Failed");
+
+    typedef typename RowMultiply<List< Int<100>>,List<List< Int<5> > > >::result rowMul1;
+    static_assert(rowMul1::head::value == 500, "RowMultiply Failed");
+
+    typedef typename RowMultiply<List< Int<1>, Int<2> >,List<List< Int<10>,Int<20> >,List< Int<10>, Int<20> > >>::result rowMul;
+    static_assert(rowMul::head::value == 50, "RowMultiply Failed");
+
+
 	typedef List<
                 List< Int<1>, Int<2> >,
                 List< Int<0>, Int<1> >
             > matrix12;
-            
+
 	typedef List<
 					List< Int<0>, Int<7> >,
 					List< Int<8>, Int<0> >
 				> matrix22;
-				
+
 	typedef typename Multiply<matrix12, matrix22>::result matrix32; // = List<
 																    //			List< Int<16>, Int<7> >,
 																    //			List< Int<8>, Int<0> >
 																    //		  >
-																 
-	static_assert(matrix32::head::head::value == 16, "Failed");														 
 
-	std::cout << "Passed" << std::endl;
+	static_assert(matrix32::head::head::value == 16, "Failed");
+
+
+
+    std::cout << "Passed" << std::endl;
 }
