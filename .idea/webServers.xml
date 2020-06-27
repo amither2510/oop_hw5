@@ -3,10 +3,11 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="b07e5e58-0e86-4434-b30d-2cf19fc1aa09" name="OOP" url="http:///">
-        <fileTransfer rootFolder="/new_home/students/rashuk.yahav" accessType="SFTP" host="csl3.cs.technion.ac.il" port="22" sshConfigId="0bba3341-0bf7-484d-8d42-736d00904992" sshConfig="OOP">
+        <fileTransfer host="csl3.cs.technion.ac.il" port="22" rootFolder="/new_home/students/amither" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
+          <option name="port" value="22" />
         </fileTransfer>
       </webServer>
     </option>

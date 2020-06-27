@@ -5,7 +5,14 @@
       <paths name="OOP">
         <serverdata>
           <mappings>
-            <mapping deploy="/oop5/" local="$PROJECT_DIR$" web="http:///" />
+            <mapping deploy="/oop/" local="$PROJECT_DIR$" web="http:///" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote (473f8506-4c62-4b3e-81bd-fdafb1d3fc22)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
