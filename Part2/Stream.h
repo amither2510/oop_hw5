@@ -46,9 +46,9 @@ public:
     };
 
     Stream<T> filter(std::function<bool(const T*)> predicate){
-        Stream<T>* stream = new Stream();
-        stream->block = [predicate,this]()-> std::vector<T*> {
-            auto vec = getFunctions()();
+        StreamFilter<T>* stream = new StreamFilter(*this);
+        stream->block = [stream,predicate,this]()-> std::vector<T*> {
+            auto vec = stream->getOldStream()->getFunctions()();
             std::vector<T*> return_vec(vec.size());
             auto resize_vec = std::copy_if(vec.begin(),vec.end(),return_vec.begin(),predicate);
             return_vec.resize(std::distance(return_vec.begin(),resize_vec));
