@@ -6,18 +6,15 @@
 #define OOP_HW5_STREAMMAP_H
 
 #include "Stream.h"
-
-template <typename R,typename T> class StreamMap : public Stream<R>{
-    Stream<T> old_stream;
+template <typename R,typename T> class StreamMap : public R {
+    T old_stream;
 public:
-    StreamMap(Stream<T>& t):old_stream(t){};
-    StreamMap(){};
-    virtual ~StreamMap(){};
-    Stream<T>& getOldStream(){
+    StreamMap(const T old_stream) : old_stream(old_stream){}
+    StreamMap(){}
+    virtual ~StreamMap(){}
+    T& getOldStream(){
         return old_stream;
     }
 
 };
-
-
 #endif //OOP_HW5_STREAMMAP_H

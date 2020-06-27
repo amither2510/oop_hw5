@@ -4,15 +4,16 @@
 
 #ifndef OOP_HW5_STREAMFILTER_H
 #define OOP_HW5_STREAMFILTER_H
+
 #include "Stream.h"
 
-template <typename T> class StreamFilter : public Stream<T>{
-    Stream<T> old_stream;
+template <typename T> class StreamFilter : public T{
+    T old_stream;
 public:
-    StreamMap(Stream<T>& t):old_stream(t){};
-    StreamMap(){};
-    virtual ~StreamMap(){};
-    Stream<T>& getOldStream(){
+    StreamFilter(const T old_stream) : old_stream(old_stream){}
+    StreamFilter(){}
+    virtual ~StreamFilter(){}
+    T& getOldStream(){
         return old_stream;
     }
 

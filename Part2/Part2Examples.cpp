@@ -43,6 +43,13 @@ int main() {
     int array[10] = { 1, 2, 3, 2, 4, 6, 5, 7, 8, 9 };
     std::vector<int*> vector;
     for(int i = 0 ; i < 10 ; i++) vector.push_back(array + i);
+    Stream<int>::of(vector)
+            .map<Cell<int>>([](const int* a) { return new Cell<int>(*a); }).forEach(&Cell<int>::print);
+
+//    auto num = Stream<int>::of(vector).distinct().collect<std::vector<int*>>();
+    //std::cout<<"the number is  --> "<< num <<std::endl;
+
+    /*
     std::vector<std::string*> vector1(vector.size());
     auto m=std::to_string(1);
     std::cout<< Stream<int>::of(vector).filter([](const int* val) { return *val != 2; } ).count() << std::endl;
@@ -52,7 +59,7 @@ int main() {
         std::cout<<*res<<std::endl;
     }
     std::cout<<"end"<<std::endl;
-//    Stream<int>::of(vector).map<Cell<int>>([](const int* a) { return new Cell<int>(*a); });
+    Stream<int>::of(vector).map<Cell<int>>([](const int* a) { return new Cell<int>(*a); });
     //assert(Stream<int>::of(vector).filter([](const int* val) { return *val != 2; } ).count() == 8);
     //assert(Stream<int>::of(vector).distinct().count() == 9);
 
