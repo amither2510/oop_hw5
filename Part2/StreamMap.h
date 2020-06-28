@@ -7,9 +7,9 @@
 
 #include "Stream.h"
 template <typename R,typename T> class StreamMap : public R {
-    T old_stream;
+    T& old_stream;
 public:
-    StreamMap(const T old_stream) : old_stream(old_stream){}
+    StreamMap(T& old_stream) : old_stream(old_stream){}
     StreamMap(){}
     virtual ~StreamMap(){}
     T& getOldStream(){

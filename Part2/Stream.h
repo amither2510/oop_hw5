@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <functional>
 #include <vector>
+#include <numeric>
 #include "StreamFilter.h"
 #include "StreamMap.h"
 #include "StreamDistinct.h"
@@ -114,16 +115,42 @@ public:
         std::copy(m.begin(),m.end(),vec.begin());
         return vec;
     }
-
+/*
     template <typename F>
     void forEach(std::function<void (F)> f){
         auto vec = this->block();
         std::for_each(vec.begin(),vec.end(),f);
     }
-//    void forEach(std::function<void (const T)> f){
+*/
+ //    void forEach(std::function<void (const T)> f){
 //        auto vec = this->block();
 //        std::for_each(vec.begin(),vec.end(),f);
 //    }
+
+    T* reduce(T* s, std::function<T*(const T*,const T*)> f){
+        auto m = block();
+        std::accumulate(m.begin(),m.end(),s,f);
+        return s;
+    }
+
+    T* min(){
+        auto m = block();
+        return std::min_element(m.begin(),m.end());
+    }
+
+    T* max(){
+        auto m = block();
+        return std::max_element(m.begin(),m.end());
+    }
+
+    bool anyMatch(std::function<bool(const T*)> p){
+        auto m = block();
+        return std::any_of(m.begin(),m.end(),p);
+    }
+    bool allMatch(std::function<bool(const T*)> p){
+        auto m = block();
+        return std::all_of(m.begin(),m.end(),p);
+    }
 
     virtual ~Stream(){};
 };

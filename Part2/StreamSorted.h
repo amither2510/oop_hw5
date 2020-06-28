@@ -8,9 +8,9 @@
 #include "Stream.h"
 
 template <typename T> class StreamSorted : public T{
-    T old_stream;
+    T& old_stream;
 public:
-    StreamSorted(const T old_stream) : old_stream(old_stream){}
+    StreamSorted(T& old_stream) : old_stream(old_stream){}
     StreamSorted(){}
     virtual ~StreamSorted(){}
     T& getOldStream(){

@@ -7,9 +7,9 @@
 #include "Stream.h"
 
 template <typename T> class StreamDistinct : public T{
-    T old_stream;
+    T& old_stream;
 public:
-    StreamDistinct(const T old_stream) : old_stream(old_stream){}
+    StreamDistinct(T& old_stream) : old_stream(old_stream){}
     StreamDistinct(){}
     virtual ~StreamDistinct(){}
     T& getOldStream(){
