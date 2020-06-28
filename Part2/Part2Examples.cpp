@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iterator>
 #include <numeric>
+#include <map>
 #include <algorithm>
 #include "Stream.h"
 #include <string>
@@ -66,7 +67,20 @@ int main() {
         std::cout<<"null!!"<<std::endl;
     } else {
         std::cout << *result2 << std::endl;
-    }
+    };
+    std::map<char,int*> first;
+    std::cout<<"map:"<<std::endl<<std::endl;
+    first['a']=array+0;
+    first['b']=array+1;
+    first['c']=array+2;
+    first['d']=array+3;
+    for(auto it: first){
+        std::cout<<*it.second<<std::endl;
+    };
+    std::cout<<std::endl;
+    std::cout<<Stream<int>::of(first).distinct().count()<<std::endl;
+
+
     //assert(compareValues(Stream<int>::of(vector).distinct().sorted().collect<std::vector<int*>>(), other));
 //    int initial = 0;
 //    int s=*Stream<int>::of(vector).reduce(&initial, [](const int* a, const int* b) { auto * c = new int; *c = *a + *b; return c; });

@@ -45,6 +45,16 @@ public:
         return *stream;
     };
 
+    template <template<typename... YM> class NM, typename K>
+    Stream<T> static of(NM<K,T*>& container){
+        std::vector<T*> values;
+        for(auto it: container){
+            values.push_back(it.second);
+        }
+        auto stream = new Stream(values);
+        return *stream;
+    };
+
     Stream(){};
     /*
     Stream(Stream<T>& s){
