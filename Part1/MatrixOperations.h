@@ -115,7 +115,6 @@ struct InitMultiply<List<List<L1...>>,List<List<L2...>>> {
 //-------------Multiply-------------
 template<typename M1, typename M2>
 struct Multiply{
-    static_assert(M1::size == Transpose<M2>::matrix::size, "matrix multiplication is undefined");
     static_assert(Transpose<M1>::matrix::size == M2::size, "matrix multiplication is undefined");
     typedef typename InitMultiply<M1,typename Transpose<M2>::matrix>::result result;
 

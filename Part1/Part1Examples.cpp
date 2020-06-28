@@ -164,7 +164,7 @@ int main() {
 
 
 	typedef  typename  Multiply  <vector1on3_1,  matrix3on3_2>::result res3;
-	typedef typename res3::head row;
+ 	typedef typename res3::head row;
 	static_assert(ListGet<0,row >::value::value == 15, "Failed");
 	static_assert(ListGet<1,row >::value::value == 20, "Failed");
 	static_assert(ListGet<2,row >::value::value == 3, "Failed");
