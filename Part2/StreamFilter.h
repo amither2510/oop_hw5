@@ -7,13 +7,19 @@
 
 #include "Stream.h"
 
+
+
 template <typename T> class StreamFilter : public T{
-    T& old_stream;
+    T* old_stream;
 public:
-    StreamFilter(T& old_stream) : old_stream(old_stream){}
+    StreamFilter(T* old_stream){
+       this->old_stream= new T(*old_stream);
+    }
     StreamFilter(){}
-    virtual ~StreamFilter(){}
-    T& getOldStream(){
+    virtual ~StreamFilter(){
+        delete(old_stream);
+    }
+    T* getOldStream(){
         return old_stream;
     }
 

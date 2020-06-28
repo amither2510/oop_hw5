@@ -60,28 +60,36 @@ void TestOf(  std::vector<std::string*> empty_vec ,std::map<int,int*> empty_map 
 void TestFilter(std::vector<std::string*>& empty_vec , std::map<int,int*>& empty_map  ,  std::map<int,std::string*>& map_strings,
                 std::vector<std::string*>& vec_strings, std::vector<std::string*> vec_strings_b_c ,std::vector<std::string*> vec_strings_c
         ,std::vector<std::string*> vec_strings_a_a_a){
+
     assert(Stream<std::string>::of(empty_vec).filter([](const std::string* str) { return *str != "d"; } )
                    .collect<std::list<std::string*>>().empty() )  ;
-    Stream<int>::of(empty_map).filter([](const int* val) { return *val != 2; } );
+
+//    Stream<int>::of(empty_map).filter([](const int* val) { return *val != 2; } );
     assert(Compare (vec_strings,
                     Stream<std::string>::of(vec_strings).filter([](const std::string* str) { return *str != "d"; } )
                             .collect<std::list<std::string*>>()  ) )  ;
+
     std::list<std::string*> lst ( Stream<std::string>::of(vec_strings).filter([](const std::string* str) { return *str != "a"; } )
                                 .collect<std::list<std::string*>>() ) ;
     assert(Compare (vec_strings_b_c, lst)  );
+
     std::list<std::string*> lst_c ( Stream<std::string>::of(lst).filter([](const std::string* str) { return *str != "b"; } )
                                   .collect<std::list<std::string*>>() ) ;
     assert(Compare (vec_strings_c, lst_c)  );
+
     assert(Stream<std::string>::of(lst_c).filter([](const std::string* str) { return *str != "c"; } )
                    .collect<std::list<std::string*>>().empty() )  ;
     assert(Stream<std::string>::of(vec_strings_a_a_a).filter([](const std::string* str) { return *str != "a"; } )
                    .collect<std::list<std::string*>>().empty() )  ;
+
     //check lazy,should work because the lazy eval.
     int* a = nullptr;
-    Stream<std::string>::of(vec_strings_a_a_a).filter([&a](const std::string* str) { *a = 3; return *str != "a"; } )  ;
+  //  Stream<std::string>::of(vec_strings_a_a_a).filter([&a](const std::string* str) { *a = 3; return *str != "a"; } )  ;
     assert(Compare(vec_strings_c, Stream<std::string>::of(vec_strings).filter([](const std::string* str) { return *str != "a"; } )
             .filter([](const std::string* str) { return *str != "b"; } ).collect<std::list<std::string*>>() ) ) ;
-}
+
+ }
+
 
 void TestMap(std::vector<std::string*>& empty_vec , std::map<int,int*>& empty_map  ,  std::map<int,std::string*>& map_strings, std::vector<std::string*>& vec_strings, std::vector<std::string*>& vec_strings_b_c
         ,std::vector<std::string*> vec_strings_a_a_a,std::vector<int*> vec_int_0_1_2, int* x){
@@ -221,9 +229,11 @@ int main() {
 
 
     int x = 3;
-    TestOf(empty_vec,empty_map,map1,map_strings,vec_strings);
+   // TestOf(empty_vec,empty_map,map1,map_strings,vec_strings);
     TestFilter(empty_vec,empty_map, map_strings ,vec_strings,vec_strings_b_c,vec_strings_c , vec_strings_a_a_a);
+
     TestMap(empty_vec,empty_map, map_strings ,vec_strings,vec_strings_b_c , vec_strings_a_a_a,vec_int_0_1_2 ,&x);
+
     TesTDistinct(empty_vec,empty_map, map_strings ,vec_strings,vec_strings_b_c,vec_strings_c , vec_strings_a_a_a,vec_int_0_1_2 , vec_strings_a);
     TestSorted(empty_vec,empty_map, map_strings ,vec_strings , vec_strings_a_a_a,vec_int_0_1_2 ,&x,vec_strings_a
             ,vec_strings_c_b_a);
@@ -233,14 +243,10 @@ int main() {
     Mix();
 
 
-   // int array[10] = { 1, 2, 3, 2, 4, 6, 5, 7, 8, 9 };
     std::vector<int*> vector;
     for(int i = 0 ; i < 10 ; i++) vector.push_back(array + i);
- //   assert(Stream<int>::of(vector).filter([](const int* val) { return *val != 2; } ).count() == 8);
-    auto k = (Stream<int>::of(vector));
-   // std::cout<<k.count()<<std::endl;
-    //k.forEach([](int* k)->void {std::cout<<*k<<std::endl;});
-    /*
+    assert(Stream<int>::of(vector).filter([](const int* val) { return *val != 2; } ).count() == 8);
+    assert(Stream<int>::of(vector).distinct().count() == 10);
     std::vector<int> other = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     assert(compareValues(Stream<int>::of(vector).distinct().sorted().collect<std::vector<int*>>(), other));
 
@@ -249,7 +255,7 @@ int main() {
     int initial = 0;
     assert(*Stream<int>::of(vector).reduce(&initial, [](const int* a, const int* b) { auto * c = new int; *c = *a + *b; return c; }) == 47);
     std::cout<<"passed part2";
-*/
+
     return 0;
 }
 

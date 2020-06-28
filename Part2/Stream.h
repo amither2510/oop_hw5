@@ -43,7 +43,9 @@ public:
 
     Stream(){};
 
-
+    Stream(const Stream& other){
+        this->block = other.block;
+    }
 
     template <template<typename... Y> class N>
     Stream(N<T*>& m){
@@ -54,46 +56,51 @@ public:
         };
     };
 
-    Stream<T>& filter(std::function<bool(const T*)> predicate){
-        StreamFilter<Stream<T>>* stream = new StreamFilter<Stream<T>>(*this);
-
-        stream->block = [stream,predicate]()-> std::vector<T*> {
-            auto vec = stream->getOldStream().block();
+    Stream<T> filter(std::function<bool(const T*)> predicate){
+        StreamFilter<Stream<T>>* stream = new StreamFilter<Stream<T>>(this);
+        auto mm = stream;
+        stream->block = [mm,predicate]()-> std::vector<T*> {
+            auto vec = mm->getOldStream()->block();
             std::vector<T*> return_vec(vec.size());
             auto resize_vec = std::copy_if(vec.begin(),vec.end(),return_vec.begin(),predicate);
             return_vec.resize(std::distance(return_vec.begin(),resize_vec));
-           // delete(stream->getOldStream())
+            delete(mm);
             return return_vec;
         };
         return *stream;
     }
 
     template <typename R>
-    Stream<R>& map(std::function<R*(const T*)> transform){
-        StreamMap<Stream<R>,Stream<T>>* stream = new StreamMap<Stream<R>,Stream<T>>(*this);
-        stream->block=[stream,transform]()-> std::vector<R*> {
-            auto vec = stream->getOldStream().block();
+    Stream<R> map(std::function<R*(const T*)> transform){
+        StreamMap<Stream<R>,Stream<T>>* stream = new StreamMap<Stream<R>,Stream<T>>(this);
+        auto mm =stream;
+        stream->block=[mm,transform]()-> std::vector<R*> {
+            auto vec = mm->getOldStream()->block();
             std::vector<R*> return_vec(vec.size());
             auto resize_vec = std::transform(vec.begin(),vec.end(),return_vec.begin(),transform);
+            delete(mm);
             return return_vec;
         };
         return *stream;
     }
     Stream<T> distinct(std::function<bool(const T*,const T*)>  compartor = UNIQUE_COMPRATOR){
-        StreamDistinct<Stream<T>> stream =StreamDistinct<Stream<T>>(*this);
-        auto mm = &stream;
-        stream.block = [mm,compartor]()-> std::vector<T*> {
-            auto vec = mm->getOldStream().block();
+        StreamDistinct<Stream<T>>* stream = new StreamDistinct<Stream<T>>(this);
+        auto mm = stream;
+        stream->block = [mm,compartor]()-> std::vector<T*> {
+            auto vec = mm->getOldStream()->block();
             vec.erase( unique( vec.begin(), vec.end(),compartor ), vec.end() );
+            delete(mm);
             return vec;
         };
-        return stream;
+        return *stream;
     }
-    Stream<T>& sorted(std::function<bool(const T*,const T*)>  compartor = SORT_COMPRATOR){
-        StreamSorted<Stream<T>>* stream = new StreamSorted<Stream<T>>(*this);
-        stream->block = [stream,compartor]()-> std::vector<T*> {
-            auto vec = stream->getOldStream().block();
+    Stream<T> sorted(std::function<bool(const T*,const T*)>  compartor = SORT_COMPRATOR){
+        StreamSorted<Stream<T>>* stream = new StreamSorted<Stream<T>>(this);
+        auto mm = stream;
+        stream->block = [mm,compartor]()-> std::vector<T*> {
+            auto vec = mm->getOldStream()->block();
             sort( vec.begin(), vec.end(),compartor );
+            delete(mm);
             return vec;
         };
         return *stream;
@@ -155,6 +162,7 @@ public:
     }
 
     virtual ~Stream(){
+
     }
 };
 
