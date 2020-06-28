@@ -231,12 +231,16 @@ int main() {
             ,vec_strings_c_b_a);
     TestReduce();
     Mix();
+
+
+   // int array[10] = { 1, 2, 3, 2, 4, 6, 5, 7, 8, 9 };
     std::vector<int*> vector;
-/*
     for(int i = 0 ; i < 10 ; i++) vector.push_back(array + i);
-    assert(Stream<int>::of(vector).filter([](const int* val) { return *val != 2; } ).count() == 8);
-    auto k = (Stream<int>::of(vector).distinct());
-    k.forEach([](int* k)->void {std::cout<<*k<<std::endl;});
+ //   assert(Stream<int>::of(vector).filter([](const int* val) { return *val != 2; } ).count() == 8);
+    auto k = (Stream<int>::of(vector));
+   // std::cout<<k.count()<<std::endl;
+    //k.forEach([](int* k)->void {std::cout<<*k<<std::endl;});
+    /*
     std::vector<int> other = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     assert(compareValues(Stream<int>::of(vector).distinct().sorted().collect<std::vector<int*>>(), other));
 
