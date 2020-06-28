@@ -49,8 +49,24 @@ int main() {
 
     std::vector<int> other = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     int initial = 0;
-    std::cout<<*std::accumulate(vector.begin(),vector.end(),&initial,[](const int* a, const int* b) { auto * c = new int; *c = *a + *b; return c; });
-
+    //std::cout<<*std::accumulate(vector.begin(),vector.end(),&initial,[](const int* a, const int* b) { auto * c = new int; *c = *a + *b; return c; });
+    Stream<int>::of(vector)
+            .map<Cell<int>>([](const int* a) { return new Cell<int>(*a); })
+            .forEach(&Cell<int>::print);
+    int* minimal = Stream<int>::of(vector).min();
+    std::cout<<*minimal<<std::endl;
+    int* maximal = Stream<int>::of(vector).max();
+    std::cout<<*maximal<<std::endl;
+    bool result = Stream<int>::of(vector).anyMatch([](const int* a) { return *a == 7; });
+    std::cout<<result<<std::endl;
+    bool result1 = Stream<int>::of(vector).allMatch([](const int* a) { return *a < 10; });
+    std::cout<<result1<<std::endl;
+    int* result2 = Stream<int>::of(vector).findFirst([](const int* a) { return *a > 6; });
+    if(!result2){
+        std::cout<<"null!!"<<std::endl;
+    } else {
+        std::cout << *result2 << std::endl;
+    }
     //assert(compareValues(Stream<int>::of(vector).distinct().sorted().collect<std::vector<int*>>(), other));
 //    int initial = 0;
 //    int s=*Stream<int>::of(vector).reduce(&initial, [](const int* a, const int* b) { auto * c = new int; *c = *a + *b; return c; });

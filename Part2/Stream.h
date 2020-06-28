@@ -115,32 +115,29 @@ public:
         std::copy(m.begin(),m.end(),vec.begin());
         return vec;
     }
-/*
-    template <typename F>
-    void forEach(std::function<void (F)> f){
+
+    void forEach(std::function<void (T*)> f){
         auto vec = this->block();
         std::for_each(vec.begin(),vec.end(),f);
     }
-*/
- //    void forEach(std::function<void (const T)> f){
-//        auto vec = this->block();
-//        std::for_each(vec.begin(),vec.end(),f);
-//    }
 
     T* reduce(T* s, std::function<T*(const T*,const T*)> f){
         auto m = block();
-        std::accumulate(m.begin(),m.end(),s,f);
+        for(auto it : m){
+            *s= *(f(it,s));
+        }
         return s;
     }
 
+
     T* min(){
         auto m = block();
-        return std::min_element(m.begin(),m.end());
+        return (T*)(*std::min_element(m.begin(),m.end()));
     }
 
     T* max(){
         auto m = block();
-        return std::max_element(m.begin(),m.end());
+        return (T*)(*std::max_element(m.begin(),m.end()));
     }
 
     bool anyMatch(std::function<bool(const T*)> p){
@@ -150,6 +147,16 @@ public:
     bool allMatch(std::function<bool(const T*)> p){
         auto m = block();
         return std::all_of(m.begin(),m.end(),p);
+    }
+
+    T* findFirst(std::function<bool(const T*)> p){
+        auto m = block();
+        auto result= std::find_if(m.begin(),m.end(),p);
+        if(result==m.end()){
+            return nullptr;
+        }
+        return (T*)(*result);
+
     }
 
     virtual ~Stream(){};
